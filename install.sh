@@ -198,7 +198,7 @@ function install_runtime() {
         mkdir /etc/containerd/
     fi
     containerd config default > /etc/containerd/config.toml
-    sed -i 's/config_path\ =.*/config_path = \"\/etc\/containerd\/certs.d\"/g' /etc/containerd/config.toml
+    sed -i 's|config_path = ""|config_path = "/etc/containerd/certs.d"|' "/etc/containerd/config.toml"
     sed -i 's#SystemdCgroup = false#SystemdCgroup = true#g' /etc/containerd/config.toml
     sed -i 's/sandbox_image\ =.*/sandbox_image\ =\ "registry.aliyuncs.com\/google_containers\/pause:3.9"/g' /etc/containerd/config.toml|grep sandbox_image
     wget -c -O /etc/systemd/system/containerd.service https://ghproxy.com/https://raw.githubusercontent.com/containerd/containerd/main/containerd.service
@@ -232,35 +232,35 @@ if [ ! -d /etc/containerd/certs.d/docker.io ];then
   mkdir /etc/containerd/certs.d/docker.io
 fi
 cat > /etc/containerd/certs.d/docker.io/hosts.toml << EOF
-server = “https://docker.io”
-[host.“docker.m.daocloud.io”]
-  capabilities = [“pull”, “resolve”]
-[host.“https://docker.mirrors.ustc.edu.cn”]
-  capabilities = [“pull”, “resolve”]
+server = "https://docker.io"
+[host."docker.m.daocloud.io"]
+  capabilities = ["pull", "resolve"]
+[host."https://docker.mirrors.ustc.edu.cn"]
+  capabilities = ["pull", "resolve"]
 EOF
 mkdir -p /etc/containerd/certs.d/gcr.io
 cat > /etc/containerd/certs.d/gcr.io/hosts.toml << EOF
-server = “https://gcr.io”
-[host.“https://gcr.m.daocloud.io”]
-  capabilities = [“pull”, “resolve”]
+server = "https://gcr.io"
+[host."https://gcr.m.daocloud.io"]
+  capabilities = ["pull", "resolve"]
 EOF
 mkdir -p /etc/containerd/certs.d/k8s.gcr.io
 cat > /etc/containerd/certs.d/k8s.gcr.io/hosts.toml << EOF
-server = “https://k8s.gcr.io”
-[host.“https://k8s-gcr.m.daocloud.io”]
-  capabilities = [“pull”, “resolve”]
+server = "https://k8s.gcr.io"
+[host."https://k8s-gcr.m.daocloud.io"]
+  capabilities = ["pull", "resolve"]
 EOF
 mkdir -p /etc/containerd/certs.d/quay.io
 cat > /etc/containerd/certs.d/quay.io/hosts.toml << EOF
-server = “https://quay.io”
-[host.“https://quay.m.daocloud.io”]
-  capabilities = [“pull”, “resolve”]
+server = "https://quay.io"
+[host."https://quay.m.daocloud.io"]
+  capabilities = ["pull", "resolve"]
 EOF
 mkdir -p /etc/containerd/certs.d/registry.k8s.io
 cat > /etc/containerd/certs.d/registry.k8s.io/hosts.toml << EOF
-server = “https://registry.k8s.io”
-[host.“https://k8s.m.daocloud.io”]
-  capabilities = [“pull”, “resolve”]
+server = "https://registry.k8s.io"
+[host."https://k8s.m.daocloud.io"]
+  capabilities = ["pull", "resolve"]
 EOF
 systemctl start containerd && systemctl enable containerd
 
